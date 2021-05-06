@@ -21,7 +21,7 @@ cp .env.example .env
 vi .env
 
 # db migrate
-php artisan migrate
+php bin/hyperf.php migrate
 
 # start hyperf with hot reload
 php ./watch.php
