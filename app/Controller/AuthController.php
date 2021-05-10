@@ -11,12 +11,13 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
-use App\Model\User;
+use App\Request\Auth\LoginRequest;
 use App\Request\Auth\SignupRequest;
 use App\Service\UserService;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\AutoController;
 use Hyperf\HttpServer\Annotation\GetMapping;
+use Hyperf\HttpServer\Contract\ResponseInterface;
 use Qbhy\HyperfAuth\Annotation\Auth;
 use Qbhy\HyperfAuth\AuthManager;
 
@@ -31,6 +32,12 @@ class AuthController extends AbstractController
      * @var AuthManager
      */
     protected $auth;
+
+    /**
+     * @Inject
+     * @var ResponseInterface
+     */
+    protected $response;
 
     /**
      * @Inject
@@ -60,22 +67,23 @@ class AuthController extends AbstractController
     }
 
     /**
-     * @GetMapping(path="/login")
-     * @return array
+     * login.
      */
-    public function login()
+    public function login(LoginRequest $request)
     {
-        /* @var User $user */
-        // $user = User::query()->firstOrCreate([
-        //     'name' => 'test001',
-        //     'username' => 'test001',
-        //     'password' => 'ssssssss', // Hash::make('aaaaaaaa'),
-        //     'email' => 'test001@test.com',
-        // ]);
-        $user = User::query()->where('id', 1)->first();
-        return [
+        $user = $this->service->attempt([
+            'email' => $request->input('email'),
+            'password' => $request->input('password'),
+        ]);
+        if ($user === null) {
+            return $this->response->withStatus(401)->json([
+                'message' => 'Unauthorized',
+            ]);
+        }
+
+        return array_merge($user->toArray(), [
             'token' => $this->auth->login($user),
-        ];
+        ]);
     }
 
     /**

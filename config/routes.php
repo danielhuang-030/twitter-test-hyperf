@@ -25,6 +25,7 @@ Router::addServer('ws', function () {
 
 // auth
 Router::post('/signup', [AuthController::class, 'signup']);
+Router::post('/login', [AuthController::class, 'login']);
 
 // Router::addGroup('/user', function () {
 //     Router::post('', [UserController::class, 'store']);
