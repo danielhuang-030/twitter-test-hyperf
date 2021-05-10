@@ -1,7 +1,7 @@
-# hyperf test
+# twitter test hyperf
 
 ### Introduction
-hyperf test project
+hyperf implementation version of [twitter-test](https://github.com/danielhuang-030/twitter-test)
 
 ### Packages
 - [ha-ni-cc/hyperf-watch](https://github.com/ha-ni-cc/hyperf-watch) - hyperf watch
@@ -13,7 +13,7 @@ hyperf test project
 
 ```shell
 # git clone
-git clone https://github.com/danielhuang-030/hyperf-test.git
+git clone https://github.com/danielhuang-030/twitter-test-hyperf.git
 
 # composer install
 composer install
