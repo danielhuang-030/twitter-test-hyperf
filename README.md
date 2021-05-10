@@ -6,6 +6,8 @@ hyperf test project
 ### Packages
 - [ha-ni-cc/hyperf-watch](https://github.com/ha-ni-cc/hyperf-watch) - hyperf watch
 - [qbhy/hyperf-auth](https://github.com/qbhy/hyperf-auth) - auth of hyperf
+- [hyperf-ext/hashing](https://github.com/hyperf-ext/hashing) - hash of hyperf
+- [hyperf/validation](https://github.com/hyperf/validation) - validation of hyperf
 
 ### Installation
 
