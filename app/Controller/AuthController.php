@@ -16,9 +16,7 @@ use App\Request\Auth\SignupRequest;
 use App\Service\UserService;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\AutoController;
-use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Contract\ResponseInterface;
-use Qbhy\HyperfAuth\Annotation\Auth;
 use Qbhy\HyperfAuth\AuthManager;
 
 /**
@@ -69,16 +67,16 @@ class AuthController extends AbstractController
     /**
      * login.
      */
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request, ResponseInterface $response)
     {
         $user = $this->service->attempt([
             'email' => $request->input('email'),
             'password' => $request->input('password'),
         ]);
         if ($user === null) {
-            return $this->response->withStatus(401)->json([
+            return $response->json([
                 'message' => 'Unauthorized',
-            ]);
+            ])->withStatus(401);
         }
 
         return array_merge($user->toArray(), [
@@ -87,24 +85,14 @@ class AuthController extends AbstractController
     }
 
     /**
-     * @Auth("jwt")
-     * @GetMapping(path="/logout")
+     * logout.
      */
     public function logout()
     {
         $this->auth->logout();
-        return 'logout ok';
-    }
 
-    /**
-     * 使用 Auth 注解可以保证该方法必须通过某个 guard 的授权，支持同时传多个 guard，不传参数使用默认 guard.
-     * @Auth("jwt")
-     * @GetMapping(path="/info")
-     * @return string
-     */
-    public function info()
-    {
-        $user = $this->auth->user();
-        return 'hello ' . $user->name;
+        return [
+            'message' => 'Logged out',
+        ];
     }
 }

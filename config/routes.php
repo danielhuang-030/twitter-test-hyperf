@@ -12,6 +12,7 @@ declare(strict_types=1);
 use App\Controller\AuthController;
 use App\Controller\UserController;
 use Hyperf\HttpServer\Router\Router;
+use Qbhy\HyperfAuth\AuthMiddleware;
 
 Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@index');
 
@@ -27,6 +28,17 @@ Router::addServer('ws', function () {
 Router::post('/signup', [AuthController::class, 'signup']);
 Router::post('/login', [AuthController::class, 'login']);
 
-// Router::addGroup('/user', function () {
-//     Router::post('', [UserController::class, 'store']);
-// });
+// auth with middleware
+Router::addGroup('', function () {
+    // logout
+    Router::get('/logout', [AuthController::class, 'logout']);
+
+    // user
+    Router::addGroup('/user', function () {
+        Router::get('/{id:\d+}/info', [UserController::class, 'info']);
+    });
+}, [
+    'middleware' => [
+        AuthMiddleware::class,
+    ],
+]);
