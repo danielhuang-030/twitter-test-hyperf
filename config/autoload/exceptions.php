@@ -14,7 +14,7 @@ return [
         'http' => [
             Hyperf\HttpServer\Exception\Handler\HttpExceptionHandler::class,
             App\Exception\Handler\AppExceptionHandler::class,
-            Qbhy\HyperfAuth\AuthExceptionHandler::class,
+            App\Exception\Handler\AppAuthExceptionHandler::class,
             App\Exception\Handler\AppValidationExceptionHandler::class,
         ],
     ],

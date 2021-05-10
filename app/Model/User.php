@@ -35,7 +35,21 @@ class User extends Model implements Authenticatable
      */
     protected $table = 'users';
 
+    /**
+     * guarded.
+     *
+     * @var array
+     */
     protected $guarded = [];
+
+    /**
+     * hidden.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
+    ];
 
     /**
      * The attributes that should be cast to native types.
