@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+use App\Controller\AuthController;
+use App\Controller\UserController;
 use Hyperf\HttpServer\Router\Router;
 
 Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@index');
@@ -20,3 +22,10 @@ Router::get('/favicon.ico', function () {
 Router::addServer('ws', function () {
     Router::get('/', 'App\Controller\WebSocketController');
 });
+
+// auth
+Router::post('/signup', [AuthController::class, 'signup']);
+
+// Router::addGroup('/user', function () {
+//     Router::post('', [UserController::class, 'store']);
+// });
