@@ -51,7 +51,6 @@ class AuthController extends AbstractController
         $user = $this->service->createUser([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'username' => $request->input('username'),
             'password' => $request->input('password'),
         ]);
         if (empty($user)) {

@@ -24,7 +24,6 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id')->comment('自動編號');
             $table->string('name')->index()->nullable()->comment('名稱');
             $table->string('email')->unique()->comment('email');
-            $table->string('username')->unique()->comment('帳號');
             $table->string('password')->comment('密碼');
             $table->timestamps();
         });

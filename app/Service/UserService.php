@@ -44,9 +44,6 @@ class UserService
             return null;
         }
 
-        // set user
-        // Auth::setUser($user);
-
         return $user;
     }
 
