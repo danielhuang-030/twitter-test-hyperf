@@ -44,12 +44,11 @@ class UserController extends AbstractController
 
     /**
      * info.
-     * @param mixed $id
      */
-    public function info(Request $request, $id)
+    public function info(Request $request, int $id)
     {
         // $user = $this->auth->user();
-        $user = $this->service->getUser((int) $id);
+        $user = $this->service->getUser($id);
         if (empty($user)) {
             return [
                 'message' => 'Failed to get user!',

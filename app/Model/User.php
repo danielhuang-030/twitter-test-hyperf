@@ -19,7 +19,6 @@ use Qbhy\HyperfAuth\Authenticatable;
  * @property int $id
  * @property string $name
  * @property string $email
- * @property string $username
  * @property string $password
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at

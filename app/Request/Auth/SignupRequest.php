@@ -29,10 +29,6 @@ class SignupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => [
-                'required',
-                'unique:users',
-            ],
             'email' => [
                 'required',
                 'email',
@@ -54,7 +50,6 @@ class SignupRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'username' => '使用者帳號',
             'email' => 'Email',
             'name' => '名稱',
             'password' => '密碼',
@@ -67,8 +62,6 @@ class SignupRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'username.required' => ':attribute必填',
-            'username.unique' => ':attribute已存在',
             'email.required' => ':attribute必填',
             'email.email' => ':attribute格式有誤',
             'email.unique' => ':attribute已存在',
