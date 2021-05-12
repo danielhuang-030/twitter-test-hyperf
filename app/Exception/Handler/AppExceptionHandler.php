@@ -52,7 +52,7 @@ class AppExceptionHandler extends ExceptionHandler
             // custom
             case $throwable instanceof AppCustomException:
                 /** @var AppCustomException $throwable */
-                $statusCode = 400;
+                $statusCode = $throwable->getHttpStatusCode();
                 $message = $throwable->getMessage();
                 break;
             // others
