@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 use App\Controller\AuthController;
 use App\Controller\UserController;
+use App\Middleware\User\GetUserMiddleware;
 use Hyperf\HttpServer\Router\Router;
 use Qbhy\HyperfAuth\AuthMiddleware;
 
@@ -36,7 +37,11 @@ Router::addGroup('', function () {
     // user
     Router::addGroup('/user', function () {
         Router::get('/{id:\d+}/info', [UserController::class, 'info']);
-    });
+    }, [
+        'middleware' => [
+            GetUserMiddleware::class,
+        ],
+    ]);
 }, [
     'middleware' => [
         AuthMiddleware::class,
