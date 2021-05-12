@@ -11,10 +11,13 @@ declare(strict_types=1);
  */
 namespace App\Exception\Handler;
 
+use App\Exception\AppCustomException;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
+use Hyperf\Validation\ValidationException;
 use Psr\Http\Message\ResponseInterface;
+use Qbhy\HyperfAuth\Exception\UnauthorizedException;
 use Throwable;
 
 class AppExceptionHandler extends ExceptionHandler
@@ -31,9 +34,43 @@ class AppExceptionHandler extends ExceptionHandler
 
     public function handle(Throwable $throwable, ResponseInterface $response)
     {
-        $this->logger->error(sprintf('%s[%s] in %s', $throwable->getMessage(), $throwable->getLine(), $throwable->getFile()));
-        $this->logger->error($throwable->getTraceAsString());
-        return $response->withHeader('Server', 'Hyperf')->withStatus(500)->withBody(new SwooleStream('Internal Server Error.'));
+        $this->stopPropagation();
+
+        switch (true) {
+            // auth
+            case $throwable instanceof UnauthorizedException:
+                /** @var UnauthorizedException $throwable */
+                $statusCode = $throwable->getStatusCode();
+                $message = 'Unauthorized';
+                break;
+            // validation
+            case $throwable instanceof ValidationException:
+                /** @var ValidationException $throwable */
+                $statusCode = $throwable->status;
+                $message = $throwable->validator->errors()->first();
+                break;
+            // custom
+            case $throwable instanceof AppCustomException:
+                /** @var AppCustomException $throwable */
+                $statusCode = 400;
+                $message = $throwable->getMessage();
+                break;
+            // others
+            default:
+                // logger
+                $this->logger->error(sprintf('%s[%s] in %s', $throwable->getMessage(), $throwable->getLine(), $throwable->getFile()));
+                $this->logger->error($throwable->getTraceAsString());
+
+                $statusCode = 500;
+                $message = 'Internal Server Error';
+                break;
+        }
+
+        return $response->withHeader('content-type', 'application/json')
+            ->withStatus($statusCode)
+            ->withBody(new SwooleStream(json_encode([
+                'message' => $message,
+            ], JSON_UNESCAPED_UNICODE)));
     }
 
     public function isValid(Throwable $throwable): bool
