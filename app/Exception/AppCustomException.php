@@ -26,7 +26,7 @@ class AppCustomException extends ServerException
      */
     public function getHttpStatusCode(): int
     {
-        return Context::get(static::getContextName(static::CONTEXT_NAME_HTTP_STATUS_CODE));
+        return Context::get(static::getContextName(static::CONTEXT_NAME_HTTP_STATUS_CODE), 400);
     }
 
     /**
