@@ -33,7 +33,7 @@ class UserService
      *
      * @return User
      */
-    public function attempt(array $credentials)
+    public function attempt(array $credentials): ?User
     {
         $user = User::where('email', $credentials['email'])->first();
         if ($user === null) {
@@ -52,7 +52,7 @@ class UserService
      *
      * @return User
      */
-    public function getUser(int $id)
+    public function getUser(int $id): ?User
     {
         return User::find($id);
     }
