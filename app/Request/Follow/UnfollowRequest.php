@@ -9,18 +9,21 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-namespace App\Request\Auth;
+namespace App\Request\Follow;
 
+use App\Request\Traits\MergeRouteParams;
 use Hyperf\Validation\Request\FormRequest;
 
-class SignupRequest extends FormRequest
+class UnfollowRequest extends FormRequest
 {
+    use MergeRouteParams;
+
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -29,17 +32,9 @@ class SignupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => [
+            'id' => [
                 'required',
-                'email',
-                'unique:users',
-            ],
-            'name' => [
-                'required',
-            ],
-            'password' => [
-                'required',
-                'same:password_confirmation',
+                'exists:users',
             ],
         ];
     }
@@ -50,9 +45,7 @@ class SignupRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'email' => 'Email',
-            'name' => '名稱',
-            'password' => '密碼',
+            'id' => '會員編號',
         ];
     }
 
@@ -62,12 +55,8 @@ class SignupRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.required' => ':attribute必填',
-            'email.email' => ':attribute格式有誤',
-            'email.unique' => ':attribute已存在',
-            'name.required' => ':attribute必填',
-            'password.required' => ':attribute必填',
-            'password.same' => '二次輸入的:attribute不一致',
+            'id.required' => ':attribute必填',
+            'id.exists' => ':attribute不存在',
         ];
     }
 }

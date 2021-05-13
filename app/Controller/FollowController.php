@@ -12,10 +12,11 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Exception\AppCustomException;
+use App\Request\Follow\FollowingRequest;
+use App\Request\Follow\UnfollowRequest;
 use App\Service\FollowService;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\AutoController;
-use Hyperf\HttpServer\Request;
 use Qbhy\HyperfAuth\AuthManager;
 
 /**
@@ -39,10 +40,10 @@ class FollowController extends AbstractController
     /**
      * following.
      */
-    public function following(Request $request, int $id)
+    public function following(FollowingRequest $request, int $id)
     {
         if (! $this->service->follow($id, data_get($this->auth->user(), 'id', 0))) {
-            throw new AppCustomException('error');
+            throw new AppCustomException('Error when following');
         }
 
         return [
@@ -53,10 +54,10 @@ class FollowController extends AbstractController
     /**
      * unfollow.
      */
-    public function unfollow(Request $request, int $id)
+    public function unfollow(UnfollowRequest $request, int $id)
     {
         if (! $this->service->unfollow($id, data_get($this->auth->user(), 'id', 0))) {
-            throw new AppCustomException('error');
+            throw new AppCustomException('Error when unfollow');
         }
 
         return [
