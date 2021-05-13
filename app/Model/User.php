@@ -60,4 +60,30 @@ class User extends Model implements Authenticatable
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    /**
+     * following.
+     *
+     * @return \Hyperf\Database\Model\Relations\BelongsToMany;
+     */
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'user_follow', 'user_id', 'follow_id')
+            ->withPivot([
+                'created_at',
+            ]);
+    }
+
+    /**
+     * followers.
+     *
+     * @return \Hyperf\Database\Model\Relations\BelongsToMany;
+     */
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'user_follow', 'follow_id', 'user_id')
+            ->withPivot([
+                'created_at',
+            ]);
+    }
 }
