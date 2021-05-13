@@ -10,6 +10,7 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 use App\Controller\AuthController;
+use App\Controller\FollowController;
 use App\Controller\UserController;
 use App\Middleware\User\GetUserMiddleware;
 use Hyperf\HttpServer\Router\Router;
@@ -29,14 +30,25 @@ Router::addServer('ws', function () {
 Router::post('/signup', [AuthController::class, 'signup']);
 Router::post('/login', [AuthController::class, 'login']);
 
-// auth with middleware
+// auth with AuthMiddleware
 Router::addGroup('', function () {
     // logout
     Router::get('/logout', [AuthController::class, 'logout']);
 
-    // user
-    Router::addGroup('/user', function () {
-        Router::get('/{id:\d+}/info', [UserController::class, 'info']);
+    // user/follow with GetUserMiddleware
+    Router::addGroup('', function () {
+        // user
+        Router::addGroup('/user', function () {
+            Router::get('/{id:\d+}/info', [UserController::class, 'info']);
+            Router::get('/{id:\d+}/following', [UserController::class, 'following']);
+            Router::get('/{id:\d+}/followers', [UserController::class, 'followers']);
+        });
+
+        // follow
+        Router::addGroup('/following', function () {
+            Router::patch('/{id:\d+}', [FollowController::class, 'following']);
+            Router::delete('/{id:\d+}', [FollowController::class, 'unfollow']);
+        });
     }, [
         'middleware' => [
             GetUserMiddleware::class,
