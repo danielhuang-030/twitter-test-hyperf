@@ -47,14 +47,22 @@ class UserController extends AbstractController
      */
     public function info(Request $request, int $id)
     {
-        // $user = $this->auth->user();
-        $user = $this->service->getUser($id);
-        if (empty($user)) {
-            return [
-                'message' => 'Failed to get user!',
-            ];
-        }
+        return $request->getAttribute('user');
+    }
 
-        return $user->toArray();
+    /**
+     * following.
+     */
+    public function following(Request $request, int $id)
+    {
+        return $request->getAttribute('user')->following;
+    }
+
+    /**
+     * followers.
+     */
+    public function followers(Request $request, int $id)
+    {
+        return $request->getAttribute('user')->followers;
     }
 }
