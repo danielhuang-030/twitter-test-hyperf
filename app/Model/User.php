@@ -86,4 +86,14 @@ class User extends Model implements Authenticatable
                 'created_at',
             ]);
     }
+
+    /**
+     * posts.
+     *
+     * @return \Hyperf\Database\Model\Relations\HasMany
+     */
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }
