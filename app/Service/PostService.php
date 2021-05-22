@@ -32,4 +32,46 @@ class PostService
     {
         return Post::find($id);
     }
+
+    /**
+     * update post.
+     */
+    public function updatePost(array $data, int $postId, int $userId): ?Post
+    {
+        $post = Post::find($postId);
+        if ($post === null) {
+            return null;
+        }
+
+        if ($post->user_id != $userId) {
+            return null;
+        }
+
+        if (! $post->update($data)) {
+            return null;
+        }
+
+        return $post;
+    }
+
+    /**
+     * delete post.
+     */
+    public function deletePost(int $postId, int $userId): bool
+    {
+        $post = Post::find($postId);
+        if ($post === null) {
+            return false;
+        }
+
+        if ($post->user_id != $userId) {
+            return false;
+        }
+
+        if ($post->delete($postId) === 0) {
+            return false;
+        }
+
+        return true;
+    }
 }
