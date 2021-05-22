@@ -60,7 +60,10 @@ Router::addGroup('/api', function () {
 
         // post
         Router::addGroup('/posts', function () {
+            Router::get('/{id:\d+}', [PostController::class, 'show']);
             Router::post('/', [PostController::class, 'store']);
+            Router::put('/{id:\d+}', [PostController::class, 'update']);
+            Router::delete('/{id:\d+}', [PostController::class, 'destroy']);
         });
     }, [
         'middleware' => [
