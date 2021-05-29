@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use App\Request\Post\LikeRequest;
 use App\Request\Post\ShowRequest;
 use App\Request\Post\StoreRequest;
 use App\Request\Post\UpdateRequest;
@@ -95,6 +96,22 @@ class PostController extends AbstractController
 
         return $response->json([
             'message' => 'Successfully deleted post!',
+        ]);
+    }
+
+    /**
+     * like.
+     */
+    public function like(LikeRequest $request, ResponseInterface $response, int $id)
+    {
+        if (! $this->service->likePost($id, data_get($this->auth->user(), 'id', 0))) {
+            return $response->json([
+                'message' => 'error',
+            ])->withStatus(400);
+        }
+
+        return $response->json([
+            'message' => 'Successfully liked post!',
         ]);
     }
 }
