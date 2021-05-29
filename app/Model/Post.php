@@ -23,6 +23,20 @@ use Hyperf\DbConnection\Model\Model;
 class Post extends Model
 {
     /**
+     * IS LIKED DISLIKE.
+     *
+     * @var int
+     */
+    const LIKED_DISLIKE = 0;
+
+    /**
+     * IS LIKED LIKE.
+     *
+     * @var int
+     */
+    const LIKED_LIKE = 1;
+
+    /**
      * The table associated with the model.
      *
      * @var string
@@ -56,5 +70,17 @@ class Post extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * liked users.
+     *
+     * @return \Hyperf\Database\Model\Relations\BelongsToMany
+     */
+    public function likedUsers()
+    {
+        return $this->belongsToMany(User::class, 'post_like')
+            ->where('liked', static::LIKED_LIKE)
+            ->withTimestamps();
     }
 }

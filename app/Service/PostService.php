@@ -74,4 +74,18 @@ class PostService
 
         return true;
     }
+
+    /**
+     * like post.
+     */
+    public function likePost(int $postId, int $userId): bool
+    {
+        $post = Post::find($postId);
+        if ($post === null || $post->user_id === $userId) {
+            return false;
+        }
+        $post->likedUsers()->syncWithoutDetaching((array) $userId);
+
+        return true;
+    }
 }

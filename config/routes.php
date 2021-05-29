@@ -64,6 +64,7 @@ Router::addGroup('/api', function () {
             Router::post('/', [PostController::class, 'store']);
             Router::put('/{id:\d+}', [PostController::class, 'update']);
             Router::delete('/{id:\d+}', [PostController::class, 'destroy']);
+            Router::patch('/{id:\d+}/like', [PostController::class, 'like']);
         });
     }, [
         'middleware' => [
