@@ -88,4 +88,18 @@ class PostService
 
         return true;
     }
+
+    /**
+     * dislike post.
+     */
+    public function dislikePost(int $postId, int $userId): bool
+    {
+        $post = Post::find($postId);
+        if ($post === null || $post->user_id === $userId) {
+            return false;
+        }
+        $post->likedUsers()->detach((array) $userId);
+
+        return true;
+    }
 }
