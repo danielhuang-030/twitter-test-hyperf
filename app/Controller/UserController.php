@@ -65,4 +65,14 @@ class UserController extends AbstractController
     {
         return $request->getAttribute('user')->followers;
     }
+
+    /**
+     * liked posts.
+     */
+    public function likedPosts(Request $request, int $id)
+    {
+        return $request->getAttribute('user')->load(['likePosts' => function ($query) {
+            $query->orderBy('updated_at', 'desc');
+        }])->likePosts;
+    }
 }

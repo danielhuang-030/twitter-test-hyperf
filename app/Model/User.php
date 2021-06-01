@@ -96,4 +96,16 @@ class User extends Model implements Authenticatable
     {
         return $this->hasMany(Post::class);
     }
+
+    /**
+     * like posts.
+     *
+     * @return \Hyperf\Database\Model\Relations\BelongsToMany
+     */
+    public function likePosts()
+    {
+        return $this->belongsToMany(Post::class, 'post_like')
+            ->where('liked', Post::LIKED_LIKE)
+            ->withTimestamps();
+    }
 }

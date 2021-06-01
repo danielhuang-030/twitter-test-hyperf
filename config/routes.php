@@ -45,6 +45,7 @@ Router::addGroup('/api', function () {
                 Router::get('/{id:\d+}/info', [UserController::class, 'info']);
                 Router::get('/{id:\d+}/following', [UserController::class, 'following']);
                 Router::get('/{id:\d+}/followers', [UserController::class, 'followers']);
+                Router::get('/{id:\d+}/liked_posts', [UserController::class, 'likedPosts']);
             });
 
             // follow
