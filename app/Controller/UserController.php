@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use App\Middleware\User\GetUserMiddleware;
 use App\Service\UserService;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\AutoController;
@@ -47,7 +48,7 @@ class UserController extends AbstractController
      */
     public function info(Request $request, int $id)
     {
-        return $request->getAttribute('user');
+        return $request->getAttribute(GetUserMiddleware::REQUEST_NAME_USER);
     }
 
     /**
@@ -55,7 +56,7 @@ class UserController extends AbstractController
      */
     public function following(Request $request, int $id)
     {
-        return $request->getAttribute('user')->following;
+        return $request->getAttribute(GetUserMiddleware::REQUEST_NAME_USER)->following;
     }
 
     /**
@@ -63,7 +64,7 @@ class UserController extends AbstractController
      */
     public function followers(Request $request, int $id)
     {
-        return $request->getAttribute('user')->followers;
+        return $request->getAttribute(GetUserMiddleware::REQUEST_NAME_USER)->followers;
     }
 
     /**
@@ -71,7 +72,7 @@ class UserController extends AbstractController
      */
     public function likedPosts(Request $request, int $id)
     {
-        return $request->getAttribute('user')->load(['likePosts' => function ($query) {
+        return $request->getAttribute(GetUserMiddleware::REQUEST_NAME_USER)->load(['likePosts' => function ($query) {
             $query->orderBy('updated_at', 'desc');
         }])->likePosts;
     }
