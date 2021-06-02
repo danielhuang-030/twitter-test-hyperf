@@ -13,6 +13,7 @@ use App\Controller\AuthController;
 use App\Controller\FollowController;
 use App\Controller\PostController;
 use App\Controller\UserController;
+use App\Middleware\Post\GetPostMiddleware;
 use App\Middleware\User\GetUserMiddleware;
 use Hyperf\HttpServer\Router\Router;
 use Qbhy\HyperfAuth\AuthMiddleware;
@@ -61,12 +62,22 @@ Router::addGroup('/api', function () {
 
         // post
         Router::addGroup('/posts', function () {
-            Router::get('/{id:\d+}', [PostController::class, 'show']);
+            // post store
             Router::post('/', [PostController::class, 'store']);
-            Router::put('/{id:\d+}', [PostController::class, 'update']);
-            Router::delete('/{id:\d+}', [PostController::class, 'destroy']);
-            Router::patch('/{id:\d+}/like', [PostController::class, 'like']);
-            Router::delete('/{id:\d+}/like', [PostController::class, 'dislike']);
+
+            // post with GetPostMiddleware
+            Router::addGroup('', function () {
+                Router::get('/{id:\d+}', [PostController::class, 'show']);
+                Router::put('/{id:\d+}', [PostController::class, 'update']);
+                Router::delete('/{id:\d+}', [PostController::class, 'destroy']);
+                Router::patch('/{id:\d+}/like', [PostController::class, 'like']);
+                Router::delete('/{id:\d+}/like', [PostController::class, 'dislike']);
+                Router::get('/{id:\d+}/liked_users', [PostController::class, 'likedUsers']);
+            }, [
+                'middleware' => [
+                    GetPostMiddleware::class,
+                ],
+            ]);
         });
     }, [
         'middleware' => [

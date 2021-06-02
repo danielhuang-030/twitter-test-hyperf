@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use App\Middleware\Post\GetPostMiddleware;
 use App\Request\Post\DislikeRequest;
 use App\Request\Post\LikeRequest;
 use App\Request\Post\ShowRequest;
@@ -19,6 +20,7 @@ use App\Request\Post\UpdateRequest;
 use App\Service\PostService;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\AutoController;
+use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Qbhy\HyperfAuth\AuthManager;
 
@@ -66,7 +68,7 @@ class PostController extends AbstractController
      */
     public function show(ShowRequest $request, int $id)
     {
-        return $this->service->getPost($id);
+        return $request->getAttribute(GetPostMiddleware::REQUEST_NAME_POST);
     }
 
     /**
@@ -130,5 +132,15 @@ class PostController extends AbstractController
         return $response->json([
             'message' => 'Successfully disliked post!',
         ]);
+    }
+
+    /**
+     * liked users.
+     */
+    public function likedUsers(RequestInterface $request, int $id)
+    {
+        return $request->getAttribute(GetPostMiddleware::REQUEST_NAME_POST)->load(['likedUsers' => function ($query) {
+            $query->orderBy('updated_at', 'desc');
+        }])->likedUsers;
     }
 }
