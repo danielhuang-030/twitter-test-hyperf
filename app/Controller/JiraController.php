@@ -253,7 +253,7 @@ class JiraAPICaller
         ]);
         $searchResult = $this->aBasicAuthAPICaller->get('/search', [
             'jql' => $jql,
-            'fields' => 'summary,key,customfield_10014,worklog',
+            'fields' => 'summary,parent,key,issuetype,customfield_10014,worklog',
         ]);
         if (empty($searchResult->issues)) {
             return $worklogResult;
@@ -289,6 +289,9 @@ class JiraAPICaller
                     'spent_sec' => $worklog->timeSpentSeconds,
                     'contents' => !empty($worklog->comment->content) ? formatWorklogContent($worklog->comment->content) : '',
                 ];
+                if (data_get($issue, 'fields.issuetype.subtask', false)) {
+                    $worklogResult[$epic][$issue->key]['parent'] = data_get($issue, 'fields.parent.key', '');
+                }
             }
         }
 
@@ -528,7 +531,12 @@ function formatWorklogsV2(array $worklogs): array
             }
 
             $result[] = [
-                'title' => sprintf("[%s] %s", $issueKey, $issue['summary']),
+                'title' => sprintf("[%s] %s",
+                    !empty($issue['parent']) ?
+                        sprintf('%s > %s', $issue['parent'], $issueKey) :
+                        $issueKey,
+                    $issue['summary']
+                ),
                 'info' => $info,
             ];
         }
