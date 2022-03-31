@@ -28,4 +28,10 @@ return [
             LogLevel::WARNING,
         ],
     ],
+
+    // JIRA
+    'jira_api_url' => env('JIRA_API_URL', ''),
+    'jira_agile_url' => env('JIRA_AGILE_URL', ''),
+    'jira_api_user' => env('JIRA_API_USER', ''),
+    'jira_api_token' => env('JIRA_API_TOKEN', ''),
 ];

@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 use App\Controller\AuthController;
 use App\Controller\FollowController;
+use App\Controller\JiraController;
 use App\Controller\PostController;
 use App\Controller\UserController;
 use App\Middleware\Post\GetPostMiddleware;
@@ -27,6 +28,10 @@ Router::get('/favicon.ico', function () {
 Router::addServer('ws', function () {
     Router::get('/', 'App\Controller\WebSocketController');
 });
+
+Router::get('/jira', [JiraController::class, 'index']);
+Router::get('/jira/info', [JiraController::class, 'info']);
+Router::get('/jira/spent', [JiraController::class, 'spent']);
 
 // api
 Router::addGroup('/api', function () {
