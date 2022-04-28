@@ -521,6 +521,7 @@ function formatWorklogsV2(array $worklogs): array
     if (empty($worklogs)) {
         return $result;
     }
+    $totalSpentTime = 0;
     foreach ($worklogs as $epic => $issues) {
         foreach ($issues as $issueKey => $issue) {
             $info = [];
@@ -528,6 +529,8 @@ function formatWorklogsV2(array $worklogs): array
                 foreach ($worklog['contents'] as $content) {
                     $info[] = sprintf("%s", $content);
                 }
+
+                $totalSpentTime += $worklog['spent_sec'];
             }
 
             $result[] = [
@@ -541,6 +544,7 @@ function formatWorklogsV2(array $worklogs): array
             ];
         }
     }
+    $result['total'] = $totalSpentTime / 3600;
 
     return $result;
 }
