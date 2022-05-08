@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 use App\Controller\AuthController;
 use App\Controller\FollowController;
+use App\Controller\JiraController;
 use App\Controller\PostController;
 use App\Controller\UserController;
 use App\Middleware\Post\GetPostMiddleware;
