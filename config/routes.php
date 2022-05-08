@@ -28,10 +28,6 @@ Router::addServer('ws', function () {
     Router::get('/', 'App\Controller\WebSocketController');
 });
 
-Router::get('/jira', [JiraController::class, 'index']);
-Router::get('/jira/info', [JiraController::class, 'info']);
-Router::get('/jira/spent', [JiraController::class, 'spent']);
-
 // api
 Router::addGroup('/api', function () {
     // auth
